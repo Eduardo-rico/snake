@@ -13,12 +13,18 @@ class App
     def start
         #puts "esto funciona"
         @view = View::Ruby2dView.new(self)
-        Thread.new { init_timer(@view) }
+        timer_thread = Thread.new { init_timer(@view) }
         @view.start(@state)
+        timer_thread.join   
     end
 
     def init_timer(view)
         loop do
+            if @state.game_finished
+                puts "Juego Finalizado"
+                puts "Juego Finalizado #{@state.snake.positions.length}"
+                break
+            end
             @state = Actions::move_snake(@state)
             #trigger, mover la serpiente
             view.render(@state)
