@@ -1,6 +1,6 @@
 module Actions #en los modulos no se pueden declarar metodos de instancia tienen que ser de clase
     def self.move_snake(state)
-        next_direction = state.next_direction
+        next_direction = state.current_direction
         next_position = calular_next_position(state)
         if position_is_valid?(state, next_position)
          move_snake_to(state, next_position)
@@ -13,7 +13,34 @@ module Actions #en los modulos no se pueden declarar metodos de instancia tienen
         #si si es valida, mover la serpiente
     end
 
+    def self.change_direction(state, direction)
+        if next_direction_is_valid?(state, direction)
+            state.current_direction = direction
+        else
+            puts "invalid movement, pandeajo"
+        end
+        state
+    end
+
+
+
+    
     private
+
+    def self.next_direction_is_valid?(state, direction)
+        case state.current_direction
+        when Model::Direction::UP
+            return true if direction != Model::Direction::DOWN
+        when Model::Direction::DOWN
+            return true if direction != Model::Direction::UP
+        when Model::Direction::RIGHT
+            return true if direction != Model::Direction::LEFT
+        when Model::Direction::LEFT
+            return true if direction != Model::Direction::RIGHT
+        end
+
+        return false
+    end
 
     def self.position_is_valid?(state, position)
         #true o false depende si esta en la gilla y que no este superponiendose
@@ -26,10 +53,10 @@ module Actions #en los modulos no se pueden declarar metodos de instancia tienen
        return !(state.snake.positions.include? position)
     end
 
-
+   
     def self.calular_next_position(state)
         current_position = state.snake.positions.first
-        case state.next_direction
+        case state.current_direction
         when Model::Direction::UP 
             #decrementar fila
             #[(poner esta), (1,1), (0,1) <= eliminar esta]
@@ -68,6 +95,8 @@ module Actions #en los modulos no se pueden declarar metodos de instancia tienen
     def self.end_game(state)
         state.game_finished = true
     end
+
+    
 
 
 

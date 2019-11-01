@@ -23,7 +23,7 @@ module Model #modularizar todo, se crean las clases para representar los estados
   class Grid < Struct.new(:row, :col)
   end
 
-  class State < Struct.new(:snake, :food, :grid, :next_direction, :game_finished)
+  class State < Struct.new(:snake, :food, :grid, :current_direction, :game_finished)
   end
 
   def self.initial_state #devuelve el estado inicial de la aplicacion, para darselo a render para que lo pinte
