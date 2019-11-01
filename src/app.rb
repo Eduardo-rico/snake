@@ -1,5 +1,5 @@
 require_relative "view/ruby2d"
 
 view = View::Ruby2dView.new
-view.render(nil)
-
+initial_state = Model::initial_state
+view.render(initial_state)
