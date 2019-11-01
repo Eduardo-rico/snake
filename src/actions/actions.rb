@@ -1,4 +1,4 @@
-module Actions
+module Actions #en los modulos no se pueden declarar metodos de instancia tienen que ser de clase
     def self.move_snake(state)
         next_direction = state.next_direction
         next_position = calular_next_position(state)
@@ -15,10 +15,10 @@ module Actions
 
     private
 
-    def position_is_valid?(state, position)
+    def self.position_is_valid?(state, position)
         #true o false depende si esta en la gilla y que no este superponiendose
         is_invalid = ((position.row > state.grid.row ||
-            position.row < 0) || (position.col >= state.grid.cols ||
+            position.row < 0) || (position.col >= state.grid.col ||
             position.col < 0))
         return false if is_invalid
 
@@ -27,45 +27,45 @@ module Actions
     end
 
 
-    def calular_next_position(state)
+    def self.calular_next_position(state)
         current_position = state.snake.positions.first
         case state.next_direction
-        when UP 
+        when Model::Direction::UP 
             #decrementar fila
             #[(poner esta), (1,1), (0,1) <= eliminar esta]
-            return Model::Coordinates.new(
+            return Model::Coordenates.new(
                 current_position.row -1,
-                current_position.col 
+                current_position.col
             )
-        when RIGHT 
+        when Model::Direction::RIGHT 
             #incrementar columna
-            return Model::Coordinates.new(
+            return Model::Coordenates.new(
                 current_position.row ,
                 current_position.col + 1
             )
-        when LEFT 
+        when Model::Direction::LEFT 
             #incrementar fila
-            return Model::Coordinates.new(
+            return Model::Coordenates.new(
                 current_position.row,
                 current_position.col - 1
             )
-        when DOWN 
+        when Model::Direction::DOWN 
             #decrementar columna
-            return Model::Coordinates.new(
-                current_position.row +1,
-                current_position.col 
+            return Model::Coordenates.new(
+                current_position.row + 1,
+                current_position.col
             )
         end
     end
 
-    def move_snake_to(state, next_position)
+    def self.move_snake_to(state, next_position)
         new_positions = [next_position] + state.snake.positions[0...-1]
         state.snake.positions = new_positions
         state
 
     end
 
-    def end_game(state)
+    def self.end_game(state)
         state.game_finished = true
     end
 
